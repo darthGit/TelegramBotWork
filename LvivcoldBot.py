@@ -45,8 +45,6 @@ def regAdmin(update, context):
     logger.info("log: regAdmin() %s", update.message.text)
     update.message.reply_text('Для реєстрації адміністратора введіть вашу електрону пошту на Львівхолоді')
 
-def testMetod():
-    print('test hello')
 
 def cancel(update, context):
     user = update.message.from_user
