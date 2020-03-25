@@ -23,7 +23,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-REGISTR, REGADMIN = range(2)
+REGISTR, REGADMIN, SETMAIL, SETPHONE, SETNAME= range(5)
 
 def start(update, context):
     update.message.reply_text('Реєстрація в системі ')
@@ -34,7 +34,7 @@ def start(update, context):
 
 def registration(update, context):
     reply_keyboard = [['user', 'admin']]
-
+    logger.info("log: registration() %s", update.message.text)
     update.message.reply_text('Хто ви?',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
@@ -44,6 +44,18 @@ def registration(update, context):
 def regAdmin(update, context):
     logger.info("log: regAdmin() %s", update.message.text)
     update.message.reply_text('Для реєстрації адміністратора введіть вашу електрону пошту на Львівхолоді')
+    logger.info("log: regAdmin() %s", update.message.text)
+    return SETMAIL
+
+def setMailAdress(update, context):
+    logger.info("log: setMailAdress %s", update.message.text)
+    update.message.reply_text('Enter your name.')
+    return SETNAME
+
+def setNameOfUser(update, context):
+    logger.info("log: setNameOfUser %s", update.message.text)
+    update.message.reply_text('Enter your phone number.')
+
 
 
 def cancel(update, context):
@@ -69,13 +81,19 @@ def main():
 
             REGADMIN: [MessageHandler(Filters.regex('^(user|admin)$'), regAdmin)],
 
+	    SETMAIL: [MessageHandler(Filters.text, setMailAdress)],
+
+#	    SETPHONE: [MessageHandler(Filters.text, setPhoneNumber)],
+
+	    SETNAME: [MessageHandler(Filters.text, setNameOfUser)]
+
         },
 
         fallbacks=[CommandHandler('cancel', cancel)]
     )
-#    dispatcher.add_handler(CommandHandler("start", start))
+ #   dispatcher.add_handler(CommandHandler("start", start))
  #   dispatcher.add_handler(CommandHandler("registration", registration))
-  #  dispatcher.add_handler(CommandHandler("admin", regAdmin))
+ #   dispatcher.add_handler(CommandHandler("admin", regAdmin))
 
     dispatcher.add_handler(conv_handler)
 
