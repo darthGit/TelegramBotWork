@@ -11,7 +11,7 @@ class ExeComands:
         connect.connect(hostname='localhost', username='darthgit', password='toor')
         stdin, stdout, stderr = connect.exec_command('ping '+ ip_adress + ' -c 5')
         result = ''
-        for line in stdout.read.splitlines():
+        for line in stdout.readlines():
             print(line)
             result = result + line
         return result
