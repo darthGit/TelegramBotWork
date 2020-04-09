@@ -10,6 +10,7 @@ class ExeComands:
         connect.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         connect.connect(hostname='localhost', username='darthgit', password='toor')
         stdin, stdout, stderr = connect.exec_command('ping '+ ip_adress + ' -c 5')
+        connect.close()
         result = ''
         for line in stdout.readlines():
             print(line)
