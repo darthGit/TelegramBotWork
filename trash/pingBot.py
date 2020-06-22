@@ -37,11 +37,7 @@ def set_job(update, context):
 
 def ping(context):
     job = context.job 
-    #ps = subprocess.Popen(['ping', job.context.user_data['ip_adr'], '-c 5'], stdout=subprocess.PIPE)
-    #out = ps.communicate()[0]
-    #print(out)
-    #out = run_command('ping ' + job.context.user_data['ip_adr'] + ' -c 5')
-    #context.bot.send_message(job.context.user_data['chat_id'], text=str(out))
+    #ps = subprocess.Popen(['ping', job.context.user_data['ip_adr'], '-c 5'], stdout=subprocess.PIPE) #out = ps.communicate()[0]    #print(out)    #out = run_command('ping ' + job.context.user_data['ip_adr'] + ' -c 5')    #context.bot.send_message(job.context.user_data['chat_id'], text=str(out))
     res = exec_comands.ExeComands().run_ping(ip_adress=job.context.user_data['ip_adr'])
 
     context.bot.send_message(job.context.user_data['chat_id'], text=res)
@@ -51,7 +47,6 @@ def job_ping(update, context):
     """Add a job to the queue."""
     chat_id = update.message.chat_id
     try:
-        # args[0] should contain the time for the timer in seconds
         ip_adr = str(context.args[0])
         if ip_adr == "":
             update.message.reply_text('Sorry, use /ping <ip> !')
