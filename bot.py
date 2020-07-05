@@ -1,26 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # This program is dedicated to the public domain under the CC0 license.
-
 """
 Basic example for a bot that uses inline keyboards.
 """
-
 import sys
-sys.path.append('..')
-from config import *
-from utility import findIp
-from utility import exec_comands
 from commands import common
-
-
-
-from telegram import ReplyKeyboardMarkup
 from telegram.ext import (Updater, CommandHandler, CallbackQueryHandler,
-                            ConversationHandler,
-                            MessageHandler, Filters)
-                            
-#CHOOSING, SEARCH, STARTPING, ACTIONFORHOST, ACTIONFORSHOP = range(5)
+                          ConversationHandler,
+                          MessageHandler, Filters)
+from config import *
+sys.path.append('..')
+
 
 def main():
     # Create the Updater and pass it your bot's token.
@@ -33,45 +24,43 @@ def main():
 
         states={
             Config.CHOOSING: [MessageHandler(Filters.regex('^(Search)$'), common.regular_choice),
-                        MessageHandler(Filters.regex('^(Ping)$'), common.start_ping)],
+                              MessageHandler(Filters.regex('^(Ping)$'), common.start_ping)],
 
             Config.SEARCH: [MessageHandler(Filters.text, common.search)],
 
             Config.STARTPING : [MessageHandler(Filters.text, common.command_ping)],
 
             Config.ACTIONFORSHOP : [MessageHandler(Filters.regex('^(Ping router)$'), None),
-                                MessageHandler(Filters.regex('^(Ping server and AMT)$'), None),
-                                MessageHandler(Filters.regex('^(Ping switch)$'), None),
-                                MessageHandler(Filters.regex('^(Ping other host in shop)$'), None),
-                                MessageHandler(Filters.regex('^(Actions for kassa)$'), common.ping),
-                                CallbackQueryHandler(common.button, pass_update_queue=False)
-                            ],
+                                    MessageHandler(Filters.regex('^(Ping server and AMT)$'), None),
+                                    MessageHandler(Filters.regex('^(Ping switch)$'), None),
+                                    MessageHandler(Filters
+                                                   .regex('^(Ping other host in shop)$'), None),
+                                    MessageHandler(Filters
+                                                   .regex('^(Actions for kassa)$'), common.ping),
+                                    CallbackQueryHandler(common.button, pass_update_queue=False)],
             Config.ACTIONFORHOST : [MessageHandler(Filters.regex('^(Reboot)$'), None),
-                                MessageHandler(Filters.regex('^(Delete check)$'), None),
-                                MessageHandler(Filters.regex('^(killall)$'), None),
-                                MessageHandler(Filters.regex('^(Ping this host)$'), None),
-                                MessageHandler(Filters.regex('^(Get screenshot)$'), None),
-                                MessageHandler(Filters.regex('^(Get TTY)$'), None),
-                                MessageHandler(Filters.regex('^(Set TTY)$'), None),
-                                MessageHandler(Filters.regex('^(Get TTY and devices in custom.cfg)$'), None),
-                                MessageHandler(Filters.regex('^(EXIT)$'), None)
-                            ]
+                                    MessageHandler(Filters.regex('^(Delete check)$'), None),
+                                    MessageHandler(Filters.regex('^(killall)$'), None),
+                                    MessageHandler(Filters.regex('^(Ping this host)$'), None),
+                                    MessageHandler(Filters.regex('^(Get screenshot)$'), None),
+                                    MessageHandler(Filters.regex('^(Get TTY)$'), None),
+                                    MessageHandler(Filters.regex('^(Set TTY)$'), None),
+                                    MessageHandler(Filters
+                                                   .regex('^(Get TTY and devices in custom.cfg)$')
+                                                   , None),
+                                    MessageHandler(Filters.regex('^(EXIT)$'), None)]
 
         },
 
         fallbacks=[MessageHandler(Filters.regex('^Done$'), common.start)]
     )
 
-    #updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(covn_handler)
-    #updater.dispatcher.add_handler(CallbackQueryHandler(button, pass_update_queue=True))
     updater.dispatcher.add_handler(CommandHandler('help', help))
-    #updater.dispatcher.add_handler(CommandHandler('search', search))
     updater.dispatcher.add_error_handler(common.error)
 
     # Start the Bot
     updater.start_polling()
-
     # Run the bot until the user presses Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT
     updater.idle()
