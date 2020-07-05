@@ -8,15 +8,17 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 def start(update, context):
     logger.info('call')
     update.message.reply_text('Please choose :', reply_markup=get_search_keyboard())
-    return CHOOSING
+    return Config.CHOOSING
 
 def ping(update, context):
     logger.info('function ping')
     user_data = context.user_data
     for key, value in user_data.items():
         logger.info('[{}] - [{}]'.format(key, value))
+    ipaddr = '192.168.' + value + '.2'
+    exec_comands.ExeComands().run_killall(ip_adress=ipaddr)
     update.message.reply_text('Please choose :', reply_markup=get_search_keyboard())
-    return CHOOSING
+    return Config.CHOOSING
 
 
 def regular_choice(update, context):
@@ -25,12 +27,12 @@ def regular_choice(update, context):
     logger.info(text)
     update.message.reply_text("Please enter shop name!")
 
-    return SEARCH
+    return Config.SEARCH
 
 def start_ping(update, context):
     logger.info('call')
     update.message.reply_text('Please enter ip adress:')
-    return STARTPING
+    return Config.STARTPING
 
 def command_ping(update, context):
     user_data = context.user_data
@@ -42,7 +44,7 @@ def command_ping(update, context):
     print(result)
     update.message.reply_text(result)
     update.message.reply_text('Please choose (Start function):', reply_markup=get_search_keyboard())
-    return CHOOSING
+    return Config.CHOOSING
 
 
 def search(update, context):
@@ -59,7 +61,7 @@ def search(update, context):
 
         reply_markup = InlineKeyboardMarkup.from_column(keyboard)
         update.message.reply_text('Please choose:', reply_markup=reply_markup)
-        return ACTIONFORSHOP
+        return Config.ACTIONFORSHOP
     except (IndexError, ValueError):
         update.message.reply_text('Sorry, use /search <name of shop> !')
 
@@ -76,7 +78,7 @@ def button(update, context):
     host_action_keyboard_markup = ReplyKeyboardMarkup(host_action_keyboard, one_time_keyboard=True) 
 
     query.message.reply_text('Please choose (Start function):', reply_markup=host_action_keyboard_markup)
-    return ACTIONFORSHOP
+    return Config.ACTIONFORSHOP
 
 def help(update, context):
     update.message.reply_text("Use /start to test this bot.")

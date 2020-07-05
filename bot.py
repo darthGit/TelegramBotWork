@@ -19,37 +19,34 @@ from telegram import ReplyKeyboardMarkup
 from telegram.ext import (Updater, CommandHandler, CallbackQueryHandler,
                             ConversationHandler,
                             MessageHandler, Filters)
-
-TOKEN = Config.TOKEN
-
-
+                            
 #CHOOSING, SEARCH, STARTPING, ACTIONFORHOST, ACTIONFORSHOP = range(5)
 
 def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater(TOKEN, use_context=True)
+    updater = Updater(Config.TOKEN, use_context=True)
 
     covn_handler = ConversationHandler(
         entry_points=[CommandHandler('start', common.start)],
 
         states={
-            CHOOSING: [MessageHandler(Filters.regex('^(Search)$'), common.regular_choice),
+            Config.CHOOSING: [MessageHandler(Filters.regex('^(Search)$'), common.regular_choice),
                         MessageHandler(Filters.regex('^(Ping)$'), common.start_ping)],
 
-            SEARCH: [MessageHandler(Filters.text, common.search)],
+            Config.SEARCH: [MessageHandler(Filters.text, common.search)],
 
-            STARTPING : [MessageHandler(Filters.text, common.command_ping)],
+            Config.STARTPING : [MessageHandler(Filters.text, common.command_ping)],
 
-            ACTIONFORSHOP : [MessageHandler(Filters.regex('^(Ping router)$'), None),
+            Config.ACTIONFORSHOP : [MessageHandler(Filters.regex('^(Ping router)$'), None),
                                 MessageHandler(Filters.regex('^(Ping server and AMT)$'), None),
                                 MessageHandler(Filters.regex('^(Ping switch)$'), None),
                                 MessageHandler(Filters.regex('^(Ping other host in shop)$'), None),
                                 MessageHandler(Filters.regex('^(Actions for kassa)$'), common.ping),
                                 CallbackQueryHandler(common.button, pass_update_queue=False)
                             ],
-            ACTIONFORHOST : [MessageHandler(Filters.regex('^(Reboot)$'), None),
+            Config.ACTIONFORHOST : [MessageHandler(Filters.regex('^(Reboot)$'), None),
                                 MessageHandler(Filters.regex('^(Delete check)$'), None),
                                 MessageHandler(Filters.regex('^(killall)$'), None),
                                 MessageHandler(Filters.regex('^(Ping this host)$'), None),
