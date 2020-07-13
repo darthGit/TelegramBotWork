@@ -4,6 +4,7 @@
 """
 Basic example for a bot that uses inline keyboards.
 """
+
 import sys
 from commands import common
 from telegram.ext import (Updater, CommandHandler, CallbackQueryHandler,
@@ -23,10 +24,12 @@ def main():
         entry_points=[CommandHandler('start', common.start)],
 
         states={
-            Config.CHOOSING: [MessageHandler(Filters.regex('^(Search)$'), common.regular_choice),
+            Config.CHOOSING: [MessageHandler(Filters.regex('^(Search)$'), common.regular_choice, pass_user_data=True),
                               MessageHandler(Filters.regex('^(Ping)$'), common.start_ping)],
 
             Config.SEARCH: [MessageHandler(Filters.text, common.search)],
+
+            Config.CHOOSEHOST: [MessageHandler(Filters.text, common.run_command)],
 
             Config.STARTPING : [MessageHandler(Filters.text, common.command_ping)],
 
@@ -36,7 +39,7 @@ def main():
                                     MessageHandler(Filters
                                                    .regex('^(Ping other host in shop)$'), None),
                                     MessageHandler(Filters
-                                                   .regex('^(Actions for kassa)$'), common.ping),
+                                                   .regex('^(Actions for kassa)$'), common.choose_host),
                                     CallbackQueryHandler(common.button, pass_update_queue=False)],
             Config.ACTIONFORHOST : [MessageHandler(Filters.regex('^(Reboot)$'), None),
                                     MessageHandler(Filters.regex('^(Delete check)$'), None),
