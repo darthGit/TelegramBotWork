@@ -1,4 +1,6 @@
+import os
+
 
 class Config:
-    TOKEN ='966337942:AAE0FiNCyhcR-nNMdGBn1bBqg0rGCw72t48'
+    TOKEN = os.getenv('TG_BOT_TOKEN')
     CHOOSING, SEARCH, STARTPING, ACTIONFORHOST, ACTIONFORSHOP, CHOOSEHOST = range(6)
